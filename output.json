@@ -1,0 +1,70 @@
+{
+    "scores": {
+        "account_control": {
+            "quotes": [
+                "You can control your account settings and profile information."
+            ],
+            "score": 4
+        },
+        "data_collection": {
+            "quotes": [
+                "We collect information when you use our services, like browsing Reddit and filling out forms."
+            ],
+            "score": 3
+        },
+        "data_deletion": {
+            "quotes": [
+                "You can delete your account and information at any time, but some information may remain in our backups."
+            ],
+            "score": 3
+        },
+        "data_sharing": {
+            "quotes": [
+                "We may share information with third-party partners for various purposes."
+            ],
+            "score": 2
+        },
+        "legal_rights": {
+            "quotes": [
+                "We comply with legal requests from law enforcement."
+            ],
+            "score": 3
+        },
+        "privacy_controls": {
+            "quotes": [
+                "You can adjust your privacy settings to control what others see about you."
+            ],
+            "score": 4
+        },
+        "security_measures": {
+            "quotes": [
+                "We implement industry-standard security measures to protect your information."
+            ],
+            "score": 4
+        },
+        "terms_changes": {
+            "quotes": [
+                "We may update our terms and conditions from time to time."
+            ],
+            "score": 3
+        },
+        "transparency": {
+            "quotes": [
+                "We are committed to transparency and provide regular updates about how we handle your data."
+            ],
+            "score": 5
+        },
+        "user_content_rights": {
+            "quotes": [
+                "You retain ownership of your content and can manage your permissions."
+            ],
+            "score": 5
+        }
+    },
+    "metadata": {
+        "risk_percentage": 42,
+        "risk_level": "Elevated Concern",
+        "GDPR_compliance_score": 3,
+        "additional_notes": "The terms and conditions show a moderate level of GDPR compliance, with areas for improvement in data sharing and deletion. The risk level is elevated due to the data sharing with third-party partners."
+    }
+}
