@@ -1,14 +1,8 @@
 import time
-
-# Start the timer
 start_time = time.time()
-
-
-
 
 import warnings
 from pprint import pprint
-
 import pandas as pd
 from langchain_core.messages import HumanMessage
 from langchain_groq import ChatGroq
@@ -17,7 +11,6 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 from typing import List
-
 from langchain_core.output_parsers import BaseOutputParser
 from langchain_core.prompts import PromptTemplate
 from pydantic import BaseModel, Field
@@ -25,34 +18,22 @@ from langchain.chains import RetrievalQA
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
 from scrape.extract_link import get_first_google_result
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-
-# from scrape import start_url
 import re
-
 import json
 import dotenv
 import os
 
 warnings.filterwarnings("ignore")
-
 dotenv.load_dotenv()
-
-# Get the API key from the environment
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-
-
 def get_json(url: str, progress_callback=None) -> dict:
-
     if progress_callback:
         progress_callback(2)
 
-    # Get first standard Google result
     start_url = get_first_google_result(url)
     print("First Google result link:", start_url)
 
@@ -84,41 +65,28 @@ def get_json(url: str, progress_callback=None) -> dict:
     print("Saving the extracted text to a PDF file...")
     save_to_pdf(cleaned_text, r"data/terms_and_policies.pdf")
 
-
-
     if progress_callback:
         progress_callback(30)
 
     print("LLM is initializing...")
-    # Initialize the language model
     llm = ChatGroq(
         model="mixtral-8x7b-32768",
-        # model="llama3-8b-8192",
-        # model="llama-3.2-11b-vision-preview",
-        # model="llama-3.2-90b-vision-preview",
-        # model="llama-3.3-70b-versatile",
-        # model="gemma2-9b-it",
         temperature=0.2,
     )
     print("LLM initialized successfully.")
 
-    # Load the PDF document
     path = r"data\terms_and_policies.pdf"
 
     print("Loading the PDF document...")
-    # Load the documents from the PDF
     
     if progress_callback:
         progress_callback(42)
-    
     
     loader = PyPDFLoader(path)
     docs = loader.load()
     print("PDF document loaded successfully.")
 
-
     print("Splitting the documents into smaller chunks...")
-    # Split the documents into smaller chunks
     text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=0)
     documents = text_splitter.split_documents(docs)
     print("Documents split successfully.")
@@ -127,33 +95,20 @@ def get_json(url: str, progress_callback=None) -> dict:
         progress_callback(48)
 
     print("Creating the vector store...")
-    # Create the vector store
-
     local_model_path = r"model"
     embeddings = HuggingFaceEmbeddings(model_name=local_model_path)
 
-
-
-
     db = Chroma.from_documents(documents=documents, embedding=embeddings)
     print("Vector store created successfully.")
-
-
-
-
-
     
     if progress_callback:
         progress_callback(65)
 
-    # Define the output parser
     class LineListOutputParser(BaseOutputParser[List[str]]):
         def parse(self, text: str) -> List[str]:
             lines = text.strip().split("\n")
             return list(filter(None, lines)) 
 
-
-    # Define the prompt template
     output_parser = LineListOutputParser()
 
     QUERY_PROMPT = PromptTemplate(
@@ -164,16 +119,9 @@ def get_json(url: str, progress_callback=None) -> dict:
     Original question: {question}""",
     )
 
-    # Define the retrieval chain
     llm_chain = QUERY_PROMPT | llm | output_parser
 
-    # Create the retriever
     print("Creating the retriever...")
-    # retriever = MultiQueryRetriever(
-    #     retriever=db.as_retriever(), llm_chain=llm_chain, parser_key="lines"
-    # )
-
-
     retriever = MultiQueryRetriever(
         retriever=db.as_retriever(search_kwags = {"k":3}), llm_chain=llm_chain, parser_key="lines"
     )
@@ -183,28 +131,36 @@ def get_json(url: str, progress_callback=None) -> dict:
         progress_callback(69)
 
     print("Invoking the retriever...")
-    # Add the documents to the retriever
-    unique_docs = retriever.invoke('''Extract chunks of text from the Terms & Conditions document that are directly relevant to the following parameters for further analysis. 
-                                    Each chunk should provide full context and clear information about the respective category.
-                                
-                                    Provide most exclusive and relevant information for each parameter.
+    unique_docs = retriever.invoke('''Generate a structured daily schedule based on the physical information and diet plan of a person.
 
-                                    Parameters to Focus On:
+            Each schedule should be well-organized, ensuring that meal timings, workouts, hydration, and rest periods align with the individual's fitness goals and nutritional needs.
 
-                                        Account Control
-                                        Data Collection
-                                        Data Deletion
-                                        Data Sharing
-                                        Legal Rights
-                                        Privacy Controls
-                                        Security Measures
-                                        Terms Changes
-                                        Transparency
-                                        User Content Rights'''
+            Provide the most relevant and optimized routine for each of the following aspects:
+
+            Wake-up Routine
+
+            Morning Hydration & Nutrition
+
+            Exercise & Workout Plan
+
+            Breakfast
+
+            Mid-Morning Snack
+
+            Lunch
+
+            Afternoon Activity & Hydration
+
+            Evening Snack
+
+            Dinner
+
+            Night Routine & Recovery
+
+            Ensure the schedule maintains a balance between energy intake, physical activity, and rest for overall well-being.'''
                                 )
                                 
     print(len(unique_docs))
-
 
     SYSTEM_TEMPLATE = """
     Answer the user's questions based on the below context. 
@@ -215,7 +171,6 @@ def get_json(url: str, progress_callback=None) -> dict:
     </context>
     """
 
-    # Define the question answering prompt
     question_answering_prompt = ChatPromptTemplate.from_messages(
         [
             (
@@ -226,12 +181,11 @@ def get_json(url: str, progress_callback=None) -> dict:
         ]
     )
 
-    # Create the document chain
     document_chain = create_stuff_documents_chain(llm, question_answering_prompt)
 
     if progress_callback:
         progress_callback(85)
-    # Invoke the document chain
+
     print("Invoking the document chain...")
     response = document_chain.invoke(
         {
@@ -325,47 +279,7 @@ def get_json(url: str, progress_callback=None) -> dict:
                                 "GDPR_compliance_score": 0-5,
                                 "additional_notes": "Detailed observations about GDPR compliance and related strengths or shortcomings."
                             }
-                        }
-                        
-                        Score each parameter based on these criteria:
-                            Lawfulness, Fairness, and Transparency
-                            Purpose Limitation
-                            Data Minimization
-                            Accuracy
-                            Storage Limitation
-                            Integrity and Confidentiality (Security)
-                            Accountability
-                            Data Subject Rights
-                            Consent Management
-                            Data Portability
-
-
-                        Important rules for quotes:
-
-                        Use full-sentences for quotes
-                        Include exact text from the document
-                        Focus on the most concerning/relevant parts
-                        Keep quotes concise but complete
-                        Include context when needed
-                        If a quote shows positive aspects, include it too
-                        Quotes should directly support the score given
-
-                        QUOTES ARE MANDATORY FOR EACH PARAMETER, REPRESENTED ACCURATELY AND CONCISELY, FROM THE DOCUMENT.
-
-                        Avoid risk_percentage to be multiples of 10 from the result. 
-
-                        Risk Level Calculation:
-
-                        Critical Concern: <30%
-                        Elevated Concern: 30-44%
-                        Moderate Concern: 45-50%
-                        Caution Advised: 51-55%
-                        Generally Favorable: 56-70%
-                        Highly Favorable: >70%
-
-                        get the score the with the information provided in the document and provide the risk level and GDPR compliance score based on the score.
-
-                        '''
+                        }'''
                 ),
             ],
         }
@@ -373,7 +287,6 @@ def get_json(url: str, progress_callback=None) -> dict:
 
     pprint(response)
 
-    # Extract the JSON object from the response
     def extract_json(a):
         start_index = a.find('{') 
         end_index = a.rfind('}')
@@ -391,10 +304,7 @@ def get_json(url: str, progress_callback=None) -> dict:
     with open('output.json', 'r') as file:
         data = json.load(file)
 
-
     end_time = time.time()
-
-    # Calculate the elapsed time
     elapsed_time = end_time - start_time
     print(f"Time required to run the code: {elapsed_time:.2f} seconds")
 
@@ -403,7 +313,6 @@ def get_json(url: str, progress_callback=None) -> dict:
 
     return data
 
-# Get the JSON object
-# json_ob = get_json("https://www.reddit.com/r/Minecraft/comments/1hjza9r/ytber_stole_my_build_without_credit_and_hides/")
-# print("Done")
-# print(json_ob)
+json_ob = get_json("https://www.reddit.com/r/Minecraft/comments/1hjza9r/ytber_stole_my_build_without_credit_and_hides/")
+print("Done")
+print(json_ob)

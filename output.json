@@ -1,70 +1,135 @@
 {
-    "scores": {
-        "account_control": {
-            "quotes": [
-                "You can control your account settings and profile information."
-            ],
-            "score": 4
-        },
-        "data_collection": {
-            "quotes": [
-                "We collect information when you use our services, like browsing Reddit and filling out forms."
-            ],
-            "score": 3
-        },
-        "data_deletion": {
-            "quotes": [
-                "You can delete your account and information at any time, but some information may remain in our backups."
-            ],
-            "score": 3
-        },
-        "data_sharing": {
-            "quotes": [
-                "We may share information with third-party partners for various purposes."
-            ],
-            "score": 2
-        },
-        "legal_rights": {
-            "quotes": [
-                "We comply with legal requests from law enforcement."
-            ],
-            "score": 3
-        },
-        "privacy_controls": {
-            "quotes": [
-                "You can adjust your privacy settings to control what others see about you."
-            ],
-            "score": 4
-        },
-        "security_measures": {
-            "quotes": [
-                "We implement industry-standard security measures to protect your information."
-            ],
-            "score": 4
-        },
-        "terms_changes": {
-            "quotes": [
-                "We may update our terms and conditions from time to time."
-            ],
-            "score": 3
-        },
-        "transparency": {
-            "quotes": [
-                "We are committed to transparency and provide regular updates about how we handle your data."
-            ],
-            "score": 5
-        },
-        "user_content_rights": {
-            "quotes": [
-                "You retain ownership of your content and can manage your permissions."
-            ],
-            "score": 5
-        }
-    },
-    "metadata": {
-        "risk_percentage": 42,
-        "risk_level": "Elevated Concern",
-        "GDPR_compliance_score": 3,
-        "additional_notes": "The terms and conditions show a moderate level of GDPR compliance, with areas for improvement in data sharing and deletion. The risk level is elevated due to the data sharing with third-party partners."
-    }
+"assessment": {
+"physical": {
+"strengths": ["Familiar with compound movements"],
+"limitations": ["BMI of 16.83 (underweight)"],
+"fitness_level": "Intermediate"
+},
+"nutrition": {
+"current": "Insufficient calories with reasonable food choices",
+"recommended": "50% carbs / 25% protein / 25% fat with caloric surplus",
+"improvements": ["Increase calories", "Add calorie-dense foods", "More complex carbs"]
+},
+"academic": {
+"peak_times": ["Morning lectures", "Afternoon study", "Evening exam prep"],
+"workout_windows": ["Early morning (6-8am)", "Late afternoon (4-6pm)"]
+}
+},
+"schedule": {
+"class_day": [
+{
+"time": "06:30 AM",
+"type": "Meal",
+"name": "Calorie-Dense Breakfast",
+"details": "High-protein, high-calorie breakfast"
+},
+{
+"time": "10:00 AM",
+"type": "Meal",
+"name": "Mid-Morning Snack",
+"details": "Quick calorie-dense snack between classes"
+},
+{
+"time": "12:30 PM",
+"type": "Meal",
+"name": "Substantial Lunch",
+"details": "Focus on protein, vegetables, and complex carbs"
+},
+{
+"time": "04:00 PM",
+"type": "Workout",
+"name": "Strength Training",
+"details": "Compound movements for muscle growth"
+},
+{
+"time": "05:00 PM",
+"type": "Meal",
+"name": "Post-Workout Nutrition",
+"details": "Protein and carbs for recovery"
+},
+{
+"time": "07:30 PM",
+"type": "Meal",
+"name": "Nutrient-Dense Dinner",
+"details": "Complete nutrition and adequate calories"
+},
+{
+"time": "09:30 PM",
+"type": "Meal",
+"name": "Evening Protein Snack",
+"details": "Slow-digesting protein before bed"
+}
+],
+"exam_day": [
+{
+"time": "06:00 AM",
+"type": "Meal",
+"name": "Brain-Boosting Breakfast",
+"details": "Omega-3s and complex carbs for mental energy"
+},
+{
+"time": "07:00 AM",
+"type": "Workout",
+"name": "Light Morning Movement",
+"details": "Brief, low-intensity exercise for mental alertness"
+},
+{
+"time": "Every 2-3 hours",
+"type": "Meal",
+"name": "Brain-Fueling Snacks",
+"details": "Regular small meals to maintain cognitive function"
+}
+]
+},
+"adaptation": {
+"low_energy": [
+"Reduce workout intensity, maintain protein intake",
+"Add digestible carbs before high-concentration classes",
+"Increase liquid nutrition (smoothies, protein shakes)"
+],
+"time_constraints": [
+"20-30 minute compound movement workouts",
+"Prepare portable, calorie-dense meals in advance",
+"5-10 minute movement breaks between study sessions"
+],
+"exam_periods": [
+"Reduce workout intensity, maintain frequency",
+"Increase omega-3s and antioxidants",
+"Regular small meals during study sessions"
+]
+},
+"semester_plan": {
+"early_weeks_1-4": {
+"fitness": "Establish 3-4 days/week strength training",
+"nutrition": "5-6 meals daily with increasing portions",
+"goals": "0.5-1 lb gain per week"
+},
+"mid_weeks_5-10": {
+"fitness": "Progressive overload on compound lifts",
+"nutrition": "Optimize pre/post workout nutrition",
+"goals": "Consistent weight gain and strength progression"
+},
+"finals_weeks_11-15": {
+"fitness": "Maintenance with reduced volume",
+"nutrition": "Focus on cognitive-enhancing nutrients",
+"goals": "Maintain gains while managing stress"
+}
+},
+"implementation": {
+"habits": [
+"Meal prep twice weekly",
+"Consistent workout schedule",
+"Keep healthy snacks accessible",
+"Workout partner for accountability"
+],
+"minimum_protocol": {
+"time": "30 minutes/day",
+"essentials": [
+"3 strength sessions weekly",
+"1.6g protein per kg body weight",
+"5-6 meals daily",
+"8 hours sleep priority"
+]
+}
+}
 }

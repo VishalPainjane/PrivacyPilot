@@ -2,18 +2,15 @@ import streamlit as st
 from main2 import get_json
 import os
 
-# Set Streamlit Page Configuration
 st.set_page_config(
     page_title="Frosty Dark T&C Analyzer ❄️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS for Enhanced Theme and Structured Layout
 st.markdown(
     """
     <style>
-    /* Base Variables */
     :root {
         --primary-color: #ff6b6b;
         --secondary-color: #ffe66d;
@@ -28,7 +25,6 @@ st.markdown(
         --progress-responsive-width: 90%;
     }
 
-    /* Global Styles */
     body {
         background: linear-gradient(135deg, var(--background-color), #3a0088, #fdbb2d, #e7173f, #c400c6);
         background-size: 400% 400%;
@@ -46,7 +42,6 @@ st.markdown(
         100% { background-position: 0% 50%; }
     }
 
-    /* Sidebar Styles */
     .sidebar .sidebar-content {
         background: var(--background-color) !important;
         color: var(--text-color) !important;
@@ -55,12 +50,10 @@ st.markdown(
         color: var(--text-color) !important;
     }
 
-    /* Header Styles */
     .css-1aumxhk, .css-1v0mbdj {
         text-align: center;
     }
 
-    /* Cards Container */
     .container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -85,7 +78,6 @@ st.markdown(
         margin-bottom: 30px;
     }
 
-    /* Card Title */
     .card-title {
         color: var(--secondary-color);
         margin-bottom: 15px;
@@ -94,7 +86,6 @@ st.markdown(
         font-size: 1.6rem;
     }
 
-    /* Enhanced Circular Score Styles with Dynamic Gradient */
     .circular-score {
         position: relative;
         width: 120px;
@@ -116,7 +107,6 @@ st.markdown(
         z-index: 2;
     }
 
-    /* Quotes Block */
     .quotes-block {
         width: 100%;
         margin-top: 20px;
@@ -134,7 +124,6 @@ st.markdown(
 
     @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 
-    /* Enhanced quote styling & clickable links */
     .quote-card {
         font-family: 'Caveat', cursive;
         background: linear-gradient(135deg, rgba(255,182,193,0.2), rgba(255,255,255,0.1));
@@ -159,11 +148,10 @@ st.markdown(
         box-shadow: 0 4px 12px rgba(255,20,147,0.6);
     }
 
-    /* Custom Progress Bar */
     .progress {
         width: var(--progress-width);
         height: var(--progress-height);
-        margin: 2em auto; /* Adjusted margin for better visibility */
+        margin: 2em auto;
         border: 1px solid #fff;
         padding: 12px 10px;
         box-shadow: 0 0 10px #aaa;
@@ -190,13 +178,11 @@ st.markdown(
         50% { box-shadow: 0 0 15px 5px orange; }
     }
 
-    /* Headings */
     h1, h2, h3, h4, h5, h6 {
         color: var(--secondary-color) !important;
         text-shadow: 1px 1px 2px #000;
     }
 
-    /* Snow Animation */
     .css-1ka2qzg { 
         position: fixed;
         top: 0;
@@ -207,7 +193,6 @@ st.markdown(
         z-index: 9999;
     }
 
-    /* Responsive Design */
     @media (max-width: 768px) {
         .container {
             grid-template-columns: repeat(auto-fill, minmax(90%, 1fr));
@@ -217,62 +202,11 @@ st.markdown(
             width: 90%;
         }
         .progress {
-            width: var(--progress-responsive-width); /* Make progress bar responsive */
-            height: 30px; /* Reduce height for smaller screens */
+            width: var(--progress-responsive-width);
+            height: 30px;
             margin: 1em auto;
         }
     }
-
-    /* Removed Circular Progress Bar Styles
-    @keyframes progress {
-      0% { --percentage: 0; }
-      100% { --percentage: var(--value); }
-    }
-    
-    @property --percentage {
-      syntax: '<number>';
-      inherits: true;
-      initial-value: 0;
-    }
-    
-    [role="progressbar"] {
-      --percentage: var(--value);
-      --primary: #369;
-      --secondary: #adf;
-      --size: 150px; /* Adjust size as needed */
-      animation: progress 2s 0.5s forwards;
-      width: var(--size);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-    }
-
-    [role="progressbar"]::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: conic-gradient(var(--primary) calc(var(--percentage) * 1%), var(--secondary) 0);
-      mask: radial-gradient(white 55%, transparent 0);
-      mask-mode: alpha;
-      -webkit-mask: radial-gradient(#0000 55%, #000 0);
-      -webkit-mask-mode: alpha;
-    }
-    
-    [role="progressbar"]::after {
-      /* Removed circular percentage display */
-      /* content: var(--percentage) '%';
-      font-family: Helvetica, Arial, sans-serif;
-      font-size: calc(var(--size) / 5);
-      color: var(--primary);
-    }
-    */
-
     </style>
     """,
     unsafe_allow_html=True,
@@ -280,25 +214,23 @@ st.markdown(
 
 def get_score_gradient(score):
     if score >= 4:
-        return "linear-gradient(135deg, #00b09b, #96c93d)"  # Greenish for safe
+        return "linear-gradient(135deg, #00b09b, #96c93d)"
     elif score >= 2.5:
-        return "linear-gradient(135deg, #f7971e, #ffd200)"  # Yellowish for moderate
+        return "linear-gradient(135deg, #f7971e, #ffd200)"
     else:
-        return "linear-gradient(135deg, #ff416c, #ff4b2b)"  # Reddish for risky
+        return "linear-gradient(135deg, #ff416c, #ff4b2b)"
 
 def display_scores(scores):
     st.markdown("<div class='container'>", unsafe_allow_html=True)
     for section, data in scores.items():
         score = data.get('score', 0)
-        percentage = (score / 5) * 100  # Assuming score ranges from 0 to 5
+        percentage = (score / 5) * 100
         gradient = get_score_gradient(score)
         
-        # Assemble all quote cards
         quotes_html = ""
         for quote in data.get("quotes", []):
             quotes_html += f"{quote}<br>"
         
-        # Complete card HTML with quotes included
         card_html = f"""
             <div class="card">
                 <div class="card-title">{section.replace('_', ' ').title()}</div>
@@ -306,7 +238,7 @@ def display_scores(scores):
                     <span class="score-text">{score}</span>
                 </div>
                 <div class="quotes-block">
-                    <div class="quotes-title">📜 Quotes:</div>
+                    <div class="quotes-title">Quotes:</div>
                         <div class="quote-card">
                         <em>"{quotes_html}"</em>
                         </div>
@@ -319,12 +251,9 @@ def display_scores(scores):
     st.markdown("</div>", unsafe_allow_html=True)
 
 def main():
-
-    # Sidebar Configuration
-    st.sidebar.title("❄️ Frosty T&C Analyzer 📄")
+    st.sidebar.title("Frosty T&C Analyzer")
     st.sidebar.caption("Analyze Terms & Conditions with a winter twist!")
     st.sidebar.markdown("""---""")
-    # Optional: Add a GIF or another image
     st.sidebar.image("https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif", use_container_width=True)
     
     with st.sidebar.expander("🔍 **How to Use This Analyzer**"):
@@ -335,29 +264,24 @@ def main():
         4. **Check Metadata** for overall risk assessment.
         """)
 
-    with st.sidebar.expander("ℹ️ **About**"):
+    with st.sidebar.expander("ℹ**About**"):
         st.markdown("""
         **Frosty Dark T&C Analyzer** is designed to provide a festive and engaging way to evaluate the complexities of Terms & Conditions documents. Leveraging advanced analytics and a winter-themed interface, it offers clear insights and highlights crucial information.
     
         *Made with ❤️.*
         """)
 
-    # Main Header and Subheader
-    st.title("Frosty Dark T&C Analyzer ❄️")
+    st.title("Frosty Dark T&C Analyzer ")
     st.subheader("Embrace the Winter Sparkle and Evaluate T&C with Festive Cheer!")
 
-    # Input Section
     link_input = st.text_input("🔗 Enter the URL of the Terms & Conditions:", "")
 
-    # Placeholders for the custom progress bars
     progress_placeholder = st.empty()
 
-    # Analyze Button with Snow Effect
     if st.button("Analyze"):
         st.snow()
-        with st.spinner("Carving insights from T&C ice blocks... ❄️"):
+        with st.spinner("Carving insights from T&C ice blocks..."):
             try:
-                # Initialize rectangular progress bar at 0%
                 progress_placeholder.markdown("""
                     <div class="progress">
                         <div class="bar" style="width: 0%;"></div>
@@ -375,10 +299,8 @@ def main():
                         unsafe_allow_html=True,
                     )
 
-                # Call the `get_json` function with the `update_progress` callback
                 results = get_json(link_input, progress_callback=update_progress)
 
-                # Ensure rectangular progress bar is complete
                 progress_placeholder.markdown("""
                     <div class="progress">
                         <div class="bar" style="width: 100%;"></div>
@@ -387,18 +309,15 @@ def main():
                     unsafe_allow_html=True,
                 )
 
-                st.success("✨ Analysis complete! Enjoy your winter read. 🌟")
+                st.success("Analysis complete! Enjoy your winter read")
 
-                # Scores & Quotes Section
-                st.markdown("## 📊 Scores & Quotes")
+                st.markdown("## Scores & Quotes")
                 display_scores(results.get("scores", {}))
 
-                # Metadata Section
                 st.markdown("## 🗂 Metadata")
                 metadata = results.get("metadata", {})
                 risk_percentage = metadata.get("risk_percentage", 0)
 
-                # Render the Normal Progress Bar for Risk Percentage
                 st.markdown(f"""
                     <div class="progress">
                         <div class="bar" style="width: {risk_percentage}%;"></div>
@@ -407,7 +326,6 @@ def main():
                     """,
                     unsafe_allow_html=True,
                 )
-                # Display additional metadata information
                 st.markdown(f"**Risk Level:** {metadata.get('risk_level', 'N/A')}")
                 st.markdown(f"**GDPR Compliance Score:** {metadata.get('GDPR_compliance_score', 'N/A')}")
 
@@ -415,15 +333,14 @@ def main():
                     st.write(metadata.get("additional_notes", "No additional notes available."))
 
             except Exception as e:
-                st.error(f"❌ Error: {e}")
+                st.error(f"Error: {e}")
 
-    # Footer with Acknowledgments
     st.markdown("---")
     st.markdown(
         """
         <div style='text-align: center; color: var(--secondary-color);'>
             <p>🎄 Made with Frosty Love</p>
-            <p>❄️ Stay frosty and keep your T&C under control! 🎅</p>
+            <p>Stay frosty and keep your T&C under control!</p>
         </div>
         """,
         unsafe_allow_html=True,
