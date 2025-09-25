@@ -1,0 +1,264 @@
+# Fitness Schedule Analyzer and Generator Prompt
+
+Analyze the provided user fitness profile and diet information to create a personalized integrated fitness and nutrition schedule. Return a single JSON object containing assessment scores and a comprehensive daily plan that interweaves meals, workouts, and recovery.
+
+Provide actionable and personalized scheduling based on the user's physical information and dietary needs, optimizing for their specific fitness goals.
+
+Return your analysis in this exact format:
+```json
+{
+    "user_assessment": {
+        "physical_profile": {
+            "strengths": [
+                "strength identified from physical information 1",
+                "strength identified from physical information 2"
+            ],
+            "improvement_areas": [
+                "improvement area identified from physical information 1",
+                "improvement area identified from physical information 2"
+            ],
+            "fitness_level_score": 1-5
+        },
+        "nutritional_profile": {
+            "strengths": [
+                "strength identified from diet plan 1",
+                "strength identified from diet plan 2"
+            ],
+            "improvement_areas": [
+                "improvement area identified from diet plan 1",
+                "improvement area identified from diet plan 2"
+            ],
+            "nutrition_score": 1-5
+        },
+        "goal_alignment": {
+            "compatible_goals": [
+                "goal that aligns with physical profile 1",
+                "goal that aligns with physical profile 2"
+            ],
+            "goal_feasibility_score": 1-5,
+            "estimated_timeline": "X weeks/months"
+        }
+    },
+    "integrated_daily_schedule": [
+        {
+            "time": "06:00 AM",
+            "activity_type": "Hydration|Meal|Workout|Recovery|Supplement",
+            "activity_name": "Name of specific activity",
+            "duration_minutes": 15-90,
+            "details": {
+                "description": "Detailed description of the activity",
+                "intensity": "Low|Moderate|High" (for workouts only),
+                "calories": 100-800 (for meals only),
+                "equipment_needed": ["equipment1", "equipment2"] (if applicable),
+                "alternatives": ["alternative activity 1", "alternative activity 2"]
+            },
+            "nutrition_fitness_synergy": "Explanation of how this activity supports overall plan"
+        }
+    ],
+    "weekly_progression": {
+        "week_1": {
+            "focus_areas": ["area1", "area2"],
+            "target_achievements": ["achievement1", "achievement2"],
+            "adjustments": ["adjustment1", "adjustment2"]
+        },
+        "week_2": {
+            "focus_areas": ["area1", "area2"],
+            "target_achievements": ["achievement1", "achievement2"],
+            "adjustments": ["adjustment1", "adjustment2"]
+        }
+    },
+    "plan_metrics": {
+        "overall_effectiveness_score": 1-100,
+        "sustainability_rating": "Very High|High|Moderate|Low",
+        "expected_results": [
+            "expected result 1",
+            "expected result 2"
+        ],
+        "recommended_checkpoints": [
+            {"week": 1, "assessment_focus": "focus area"},
+            {"week": 2, "assessment_focus": "focus area"}
+        ]
+    }
+}
+```
+
+Assessment Criteria:
+- Physical profile should evaluate current fitness level, strengths, and limitations
+- Nutritional profile should assess dietary balance, timing, and alignment with goals
+- Goal alignment should evaluate feasibility and provide realistic timelines
+- Schedule should integrate nutrition and exercise in a synergistic way
+- Activities should build progressively throughout the day and across weeks
+
+Important guidelines for creating the integrated schedule:
+1. Every activity (meals, workouts, recovery) should be arranged in chronological order
+2. The schedule should account for optimal timing between meals and workouts
+3. Each activity should include clear purpose and connection to overall goals
+4. Provide alternatives for each activity to accommodate different circumstances
+5. Balance intensity throughout the day to optimize energy levels
+6. Schedule should promote progressive improvement across the weekly plan
+7. Include specific timing for supplements and hydration
+
+Use specific information from the user's profile:
+- Reference actual metrics (weight, BMI, etc.) when determining appropriate activities
+- Consider age and gender when determining intensity and recovery needs
+- Incorporate any indicated dietary preferences or restrictions
+- Account for equipment availability in workout recommendations
+- Suggest appropriate community activities based on the user's profile
+
+The overall effectiveness score should:
+- Range from 1-100 (avoiding multiples of 10)
+- Reflect the integration and synergy between diet and exercise
+- Consider the feasibility of the plan given the user's current state
+- Project expected outcomes if followed consistently
+
+Weekly progression should:
+- Show logical advancement in intensity and complexity
+- Provide clear focus areas for each week
+- Include necessary adjustments based on expected adaptations
+- Set realistic achievement milestones for motivation
+
+Create a schedule that flows naturally throughout the day, with each activity supporting the ones before and after it, creating a cohesive and optimized fitness and nutrition plan.
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+{
+  "assessment": {
+    "physical": {
+      "strengths": ["Familiar with compound movements", "Knowledge of strength training"],
+      "limitations": ["BMI of 16.83 (underweight)", "Limited energy reserves"],
+      "fitness_level": "Intermediate"
+    },
+    "nutrition": {
+      "current": "Insufficient calories with reasonable food choices",
+      "recommended": "50% carbs / 25% protein / 25% fat with caloric surplus",
+      "improvements": ["Increase calories", "Add calorie-dense foods", "More complex carbs"]
+    },
+    "academic": {
+      "peak_times": ["Morning lectures", "Afternoon study", "Evening exam prep"],
+      "workout_windows": ["Early morning (6-8am)", "Late afternoon (4-6pm)"]
+    }
+  },
+  "schedule": {
+    "class_day": [
+      {
+        "time": "06:30 AM",
+        "type": "Meal",
+        "name": "Calorie-Dense Breakfast",
+        "details": "High-protein, high-calorie breakfast"
+      },
+      {
+        "time": "10:00 AM",
+        "type": "Meal",
+        "name": "Mid-Morning Snack",
+        "details": "Quick calorie-dense snack between classes"
+      },
+      {
+        "time": "12:30 PM",
+        "type": "Meal",
+        "name": "Substantial Lunch",
+        "details": "Focus on protein, vegetables, and complex carbs"
+      },
+      {
+        "time": "04:00 PM",
+        "type": "Workout",
+        "name": "Strength Training",
+        "details": "Compound movements for muscle growth"
+      },
+      {
+        "time": "05:00 PM",
+        "type": "Meal",
+        "name": "Post-Workout Nutrition",
+        "details": "Protein and carbs for recovery"
+      },
+      {
+        "time": "07:30 PM",
+        "type": "Meal",
+        "name": "Nutrient-Dense Dinner",
+        "details": "Complete nutrition and adequate calories"
+      },
+      {
+        "time": "09:30 PM",
+        "type": "Meal",
+        "name": "Evening Protein Snack",
+        "details": "Slow-digesting protein before bed"
+      }
+    ],
+    "exam_day": [
+      {
+        "time": "06:00 AM",
+        "type": "Meal",
+        "name": "Brain-Boosting Breakfast",
+        "details": "Omega-3s and complex carbs for mental energy"
+      },
+      {
+        "time": "07:00 AM",
+        "type": "Workout",
+        "name": "Light Morning Movement",
+        "details": "Brief, low-intensity exercise for mental alertness"
+      },
+      {
+        "time": "Every 2-3 hours",
+        "type": "Meal",
+        "name": "Brain-Fueling Snacks",
+        "details": "Regular small meals to maintain cognitive function"
+      }
+    ]
+  },
+  "adaptation": {
+    "low_energy": [
+      "Reduce workout intensity, maintain protein intake",
+      "Add digestible carbs before high-concentration classes",
+      "Increase liquid nutrition (smoothies, protein shakes)"
+    ],
+    "time_constraints": [
+      "20-30 minute compound movement workouts",
+      "Prepare portable, calorie-dense meals in advance",
+      "5-10 minute movement breaks between study sessions"
+    ],
+    "exam_periods": [
+      "Reduce workout intensity, maintain frequency",
+      "Increase omega-3s and antioxidants",
+      "Regular small meals during study sessions"
+    ]
+  },
+  "semester_plan": {
+    "early_weeks_1-4": {
+      "fitness": "Establish 3-4 days/week strength training",
+      "nutrition": "5-6 meals daily with increasing portions",
+      "goals": "0.5-1 lb gain per week"
+    },
+    "mid_weeks_5-10": {
+      "fitness": "Progressive overload on compound lifts",
+      "nutrition": "Optimize pre/post workout nutrition",
+      "goals": "Consistent weight gain and strength progression"
+    },
+    "finals_weeks_11-15": {
+      "fitness": "Maintenance with reduced volume",
+      "nutrition": "Focus on cognitive-enhancing nutrients",
+      "goals": "Maintain gains while managing stress"
+    }
+  },
+  "implementation": {
+    "habits": [
+      "Meal prep twice weekly",
+      "Consistent workout schedule",
+      "Keep healthy snacks accessible",
+      "Workout partner for accountability"
+    ],
+    "minimum_protocol": {
+      "time": "30 minutes/day",
+      "essentials": [
+        "3 strength sessions weekly",
+        "1.6g protein per kg body weight",
+        "5-6 meals daily",
+        "8 hours sleep priority"
+      ]
+    }
+  }
+}

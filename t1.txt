@@ -1,0 +1,12 @@
+{
+  "recommendation": {
+    "diet": "Vegetables: (Broccoli, Carrots, Spinach, Lettuce, Onion); Protein Intake: (Cheese, Cattoge cheese, Skim Milk, Law fat Milk, and Baru Nuts); Juice: (Fruit Juice, Aloe vera juice, Cold-pressed juice, and Watermelon juice)",
+    "exercise": "Squats, deadlifts, bench presses, and overhead presses"
+  },
+  "bmi": 16.83,
+  "bmi_category": "Underweight",
+  "height_used": {
+    "cm": 168.0,
+    "m": 1.68
+  }
+}
