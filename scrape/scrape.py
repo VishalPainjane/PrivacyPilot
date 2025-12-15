@@ -2,9 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 import time
-from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.firefox.options import Options
+import asyncio
+from crawl4ai import AsyncWebCrawler
+import concurrent.futures
+import threading
 
 from fpdf import FPDF
 
@@ -36,14 +37,8 @@ keywords = [
 visited = set()
 extracted_text = ""
 
-options = Options()
-
-options.add_argument("--headless") 
-options.add_argument("--disable-gpu")
-options.add_argument("--window-size=1920,1080")
-
-# driver = webdriver.Chrome(options=options)
-driver = webdriver.Firefox(options=options)
+# Global crawler instance
+crawler = None
 
 def is_valid(url):
     parsed = urlparse(url)
@@ -57,13 +52,13 @@ flag = 0
 start_link = ""
 
 
-
-def scrape(url):
+async def scrape_async(url):
     global start_time
     global extracted_text
     global count
     global start_link
     global flag
+    global crawler
 
     if count == 0:
         start_link = url
@@ -76,34 +71,90 @@ def scrape(url):
         return
 
     visited.add(url)
-    driver.get(url)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    text = soup.get_text()
-
-    if extracted_text is None:
-        extracted_text = ""
-    extracted_text += text
-
-    for link in soup.find_all('a', href=True):
-        if time.time() - start_time > 7:
+    
+    # Try crawl4ai first, fallback to requests if it fails
+    try:
+        if crawler is None:
+            crawler = AsyncWebCrawler(verbose=False)
+            await crawler.start()
+        
+        result = await crawler.arun(url=url)
+        soup = BeautifulSoup(result.html, 'html.parser')
+        text = soup.get_text()
+    except Exception as crawl_error:
+        # Fallback to requests if crawl4ai fails
+        print(f"Crawl4ai error, using requests fallback: {crawl_error}")
+        try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+            response = requests.get(url, headers=headers, timeout=10)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            text = soup.get_text()
+        except Exception as req_error:
+            print(f"Requests fallback also failed: {req_error}")
             return extracted_text[:200000] or ""
+    
+    try:
+        if extracted_text is None:
+            extracted_text = ""
+        extracted_text += text
 
-        domain = start_link[len("https://"):].split(".")[0]
-        if domain not in link['href']:
-            continue
+        for link in soup.find_all('a', href=True):
+            if time.time() - start_time > 7:
+                return extracted_text[:200000] or ""
 
-        full_url = urljoin(url, link['href'])
-        if flag != 0:
-            if full_url in visited:
+            domain = start_link[len("https://"):].split(".")[0]
+            if domain not in link['href']:
                 continue
 
-        if is_valid(full_url) and contains_keyword(full_url):
-            result = scrape(full_url)
-            flag = 1
-            if result:
-                extracted_text += result
+            full_url = urljoin(url, link['href'])
+            if flag != 0:
+                if full_url in visited:
+                    continue
+
+            if is_valid(full_url) and contains_keyword(full_url):
+                result = await scrape_async(full_url)
+                flag = 1
+                if result:
+                    extracted_text += result
+    except Exception as e:
+        print(f"Error processing scraped content: {e}")
 
     return extracted_text[:200000] or ""
+
+
+async def scrape_and_cleanup(url):
+    """Async wrapper that handles both scraping and cleanup"""
+    global crawler
+    try:
+        result = await scrape_async(url)
+        return result
+    finally:
+        # Always cleanup the crawler
+        if crawler is not None:
+            try:
+                await crawler.close()
+            except Exception:
+                pass  # Ignore cleanup errors
+            crawler = None
+
+
+def scrape(url):
+    """Wrapper function to run async scrape function"""
+    # Always use thread pool to avoid event loop conflicts with Streamlit
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future = executor.submit(_run_async_scrape, url)
+        return future.result()
+
+def _run_async_scrape(url):
+    """Helper to run async scrape in a new event loop"""
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        return loop.run_until_complete(scrape_and_cleanup(url))
+    finally:
+        loop.close()
 
 
 from fpdf import FPDF
@@ -122,7 +173,6 @@ def save_to_pdf(text, filename):
 
     count = 0
     for line in text.split('\n'):
-        print(count)
         try:
             safe_line = ''.join(c if ord(c) < 65536 else '?' for c in line)
             pdf.multi_cell(0, 10, safe_line)

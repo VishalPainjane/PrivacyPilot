@@ -8,8 +8,8 @@ from langchain_core.messages import HumanMessage
 from langchain_groq import ChatGroq
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Chroma
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from typing import List
 from langchain_core.output_parsers import BaseOutputParser
 from langchain_core.prompts import PromptTemplate
@@ -19,8 +19,6 @@ from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from scrape.extract_link import get_first_google_result
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 import re
 import json
 import dotenv
@@ -41,13 +39,11 @@ def get_json(url: str, progress_callback=None) -> dict:
         progress_callback(8)
 
     from scrape.scrape import save_to_pdf, scrape
-    from scrape.scrape import driver
 
     if progress_callback:
         progress_callback(12)
 
     a = scrape(start_url)
-    driver.quit()
 
     def clean_and_compact(text):
         text = re.sub(r'[^\x20-\x7E]+', ' ', text) 
@@ -57,7 +53,7 @@ def get_json(url: str, progress_callback=None) -> dict:
         return text.strip()  
 
     cleaned_text = clean_and_compact(a)
-    print((len(cleaned_text)))
+    print(f"Scraped text length: {len(cleaned_text)} characters")
     
     if progress_callback:
         progress_callback(18)
@@ -70,7 +66,7 @@ def get_json(url: str, progress_callback=None) -> dict:
 
     print("LLM is initializing...")
     llm = ChatGroq(
-        model="mixtral-8x7b-32768",
+        model="llama-3.3-70b-versatile",
         temperature=0.2,
     )
     print("LLM initialized successfully.")
@@ -313,6 +309,8 @@ def get_json(url: str, progress_callback=None) -> dict:
 
     return data
 
-json_ob = get_json("https://www.reddit.com/r/Minecraft/comments/1hjza9r/ytber_stole_my_build_without_credit_and_hides/")
-print("Done")
-print(json_ob)
+# Test code commented out - uncomment to test with API key
+# json_ob = get_json("https://www.reddit.com/r/Minecraft/comments/1hjza9r/ytber_stole_my_build_without_credit_and_hides/")
+# print("Done")
+# print(json_ob)
+

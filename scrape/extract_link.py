@@ -1,48 +1,46 @@
 import re
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.firefox.options import Options
-from webdriver_manager.firefox import GeckoDriverManager
+from bs4 import BeautifulSoup
+from urllib.parse import quote_plus
+import requests
 
 def get_first_google_result(url):
-    match = re.search(r'https://(.*)\.', url)
+    # Extract domain name from URL (e.g., "reddit" from "https://www.reddit.com/...")
+    match = re.search(r'https?://(?:www\.)?([^./]+)', url)
     if match:
         context = match.group(1)
     else:
-        context = ''
+        # Fallback: try to get domain from the full URL
+        context = url.replace('https://', '').replace('http://', '').split('/')[0].replace('www.', '')
 
     query = f"{context} terms and conditions"
+    print(f"Searching Google for: {query}")
+    encoded_query = quote_plus(query)
+    google_url = f"https://www.google.com/search?q={encoded_query}"
 
-    options = Options()
-
-
-    options.add_argument("--headless")  
-    options.add_argument("--disable-gpu") 
-    options.add_argument("--window-size=1920,1080") 
-
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    # driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
-
-    
+    # Use requests for Google search (more reliable than crawl4ai for simple searches)
     try:
-        driver.get("https://www.google.com")
-
-        search_box = driver.find_element(By.NAME, "q")
-        search_box.send_keys(query)
-        search_box.send_keys(Keys.RETURN)
-
-        driver.implicitly_wait(5)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        response = requests.get(google_url, headers=headers, timeout=10)
+        soup = BeautifulSoup(response.text, 'html.parser')
         
-        first_element_locator = (By.CSS_SELECTOR, 'div.yuRUbf a')
-        wait = WebDriverWait(driver, 20)
-        wait.until(EC.visibility_of_element_located(first_element_locator))
-        result_element = driver.find_element(*first_element_locator).get_attribute('href')
-        return result_element
-    finally:
-        driver.quit()
+        # Find the first search result link
+        first_link = soup.select_one('div.yuRUbf a')
+        if first_link and first_link.get('href'):
+            print(f"Found Google result: {first_link.get('href')}")
+            return first_link.get('href')
+        
+        # Try alternative selectors
+        links = soup.select('a[href^="http"]')
+        for link in links:
+            href = link.get('href')
+            if href and 'google.com' not in href and 'youtube.com' not in href and 'gstatic.com' not in href:
+                print(f"Found Google result (alternative): {href}")
+                return href
+    except Exception as e:
+        print(f"Error searching Google: {e}")
+    
+    # Return original URL if nothing found
+    print(f"Using original URL: {url}")
+    return url
