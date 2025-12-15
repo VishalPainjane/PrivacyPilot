@@ -1,135 +1,80 @@
 {
-"assessment": {
-"physical": {
-"strengths": ["Familiar with compound movements"],
-"limitations": ["BMI of 16.83 (underweight)"],
-"fitness_level": "Intermediate"
-},
-"nutrition": {
-"current": "Insufficient calories with reasonable food choices",
-"recommended": "50% carbs / 25% protein / 25% fat with caloric surplus",
-"improvements": ["Increase calories", "Add calorie-dense foods", "More complex carbs"]
-},
-"academic": {
-"peak_times": ["Morning lectures", "Afternoon study", "Evening exam prep"],
-"workout_windows": ["Early morning (6-8am)", "Late afternoon (4-6pm)"]
-}
-},
-"schedule": {
-"class_day": [
-{
-"time": "06:30 AM",
-"type": "Meal",
-"name": "Calorie-Dense Breakfast",
-"details": "High-protein, high-calorie breakfast"
-},
-{
-"time": "10:00 AM",
-"type": "Meal",
-"name": "Mid-Morning Snack",
-"details": "Quick calorie-dense snack between classes"
-},
-{
-"time": "12:30 PM",
-"type": "Meal",
-"name": "Substantial Lunch",
-"details": "Focus on protein, vegetables, and complex carbs"
-},
-{
-"time": "04:00 PM",
-"type": "Workout",
-"name": "Strength Training",
-"details": "Compound movements for muscle growth"
-},
-{
-"time": "05:00 PM",
-"type": "Meal",
-"name": "Post-Workout Nutrition",
-"details": "Protein and carbs for recovery"
-},
-{
-"time": "07:30 PM",
-"type": "Meal",
-"name": "Nutrient-Dense Dinner",
-"details": "Complete nutrition and adequate calories"
-},
-{
-"time": "09:30 PM",
-"type": "Meal",
-"name": "Evening Protein Snack",
-"details": "Slow-digesting protein before bed"
-}
-],
-"exam_day": [
-{
-"time": "06:00 AM",
-"type": "Meal",
-"name": "Brain-Boosting Breakfast",
-"details": "Omega-3s and complex carbs for mental energy"
-},
-{
-"time": "07:00 AM",
-"type": "Workout",
-"name": "Light Morning Movement",
-"details": "Brief, low-intensity exercise for mental alertness"
-},
-{
-"time": "Every 2-3 hours",
-"type": "Meal",
-"name": "Brain-Fueling Snacks",
-"details": "Regular small meals to maintain cognitive function"
-}
-]
-},
-"adaptation": {
-"low_energy": [
-"Reduce workout intensity, maintain protein intake",
-"Add digestible carbs before high-concentration classes",
-"Increase liquid nutrition (smoothies, protein shakes)"
-],
-"time_constraints": [
-"20-30 minute compound movement workouts",
-"Prepare portable, calorie-dense meals in advance",
-"5-10 minute movement breaks between study sessions"
-],
-"exam_periods": [
-"Reduce workout intensity, maintain frequency",
-"Increase omega-3s and antioxidants",
-"Regular small meals during study sessions"
-]
-},
-"semester_plan": {
-"early_weeks_1-4": {
-"fitness": "Establish 3-4 days/week strength training",
-"nutrition": "5-6 meals daily with increasing portions",
-"goals": "0.5-1 lb gain per week"
-},
-"mid_weeks_5-10": {
-"fitness": "Progressive overload on compound lifts",
-"nutrition": "Optimize pre/post workout nutrition",
-"goals": "Consistent weight gain and strength progression"
-},
-"finals_weeks_11-15": {
-"fitness": "Maintenance with reduced volume",
-"nutrition": "Focus on cognitive-enhancing nutrients",
-"goals": "Maintain gains while managing stress"
-}
-},
-"implementation": {
-"habits": [
-"Meal prep twice weekly",
-"Consistent workout schedule",
-"Keep healthy snacks accessible",
-"Workout partner for accountability"
-],
-"minimum_protocol": {
-"time": "30 minutes/day",
-"essentials": [
-"3 strength sessions weekly",
-"1.6g protein per kg body weight",
-"5-6 meals daily",
-"8 hours sleep priority"
-]
-}
-}
+    "scores": {
+        "account_control": {
+            "quotes": [
+                "You can remove or revise this information at any time.",
+                "We also store your user account preferences and settings."
+            ],
+            "score": 4
+        },
+        "data_collection": {
+            "quotes": [
+                "information about your activity on our Services and limited information about your activity on the services of advertisers who use our advertising technology.",
+                "We collect information about the actions you take when using the Services."
+            ],
+            "score": 3
+        },
+        "data_deletion": {
+            "quotes": [
+                "you may have: the right to opt out of any sales or sharing of your personal information, to request access to and information about our data practices, and to request deletion or correction of your personal information",
+                "Reddit does not sell or share personal information as those terms are defined under the CCPA or other applicable regulations."
+            ],
+            "score": 4
+        },
+        "data_sharing": {
+            "quotes": [
+                "We may receive information about you from other sources, including from other users and third parties, and combine that information with the other information we have about you.",
+                "Reddit does not sell or share personal information as those terms are defined under the CCPA or other applicable regulations."
+            ],
+            "score": 3
+        },
+        "legal_rights": {
+            "quotes": [
+                "Depending on your jurisdiction, and subject to exceptions and limitations provided by local law, in addition to the rights listed in Your Rights and Choices above, you may have: the right to opt out of any sales or sharing of your personal information",
+                "you may have the right to request access to and information about our data practices, and to request deletion or correction of your personal information"
+            ],
+            "score": 4
+        },
+        "privacy_controls": {
+            "quotes": [
+                "You can control how we use this information to personalize advertisements for you by visiting the User Settings menu in your account",
+                "We also store your user account preferences and settings."
+            ],
+            "score": 4
+        },
+        "security_measures": {
+            "quotes": [
+                "Reddit uses industry-standard payment processor services(such as Stripe) to handle payment information, and those services are subject to separate terms and conditions and privacy policies.",
+                "We collect information about the actions you take when using the Services."
+            ],
+            "score": 3
+        },
+        "terms_changes": {
+            "quotes": [
+                "Reddit's Anti-Slavery and Human Trafficking Statement",
+                "Transparency Guidelines for Law Enforcement"
+            ],
+            "score": 2
+        },
+        "transparency": {
+            "quotes": [
+                "You can find more information about(a) what we collect and sources of that information in the What Information We Collect section of this notice",
+                "We may receive information about you from other sources, including from other users and third parties, and combine that information with the other information we have about you."
+            ],
+            "score": 4
+        },
+        "user_content_rights": {
+            "quotes": [
+                "Public content you submit includes your public posts, comments, and chat messages, usernames, and some of your profile information, as well as related metadata.",
+                "Non-public content you submit includes your saved drafts of posts or comments, your non-public messages with other users"
+            ],
+            "score": 4
+        }
+    }, 
+    "metadata": {
+        "risk_percentage": 40,
+        "risk_level": "Moderate Risk",
+        "GDPR_compliance_score": 4,
+        "additional_notes": "Reddit's terms and conditions seem to be mostly GDPR compliant, with clear explanations of data collection and user rights. However, some sections could be more transparent, such as the terms changes and security measures."
+    }
 }

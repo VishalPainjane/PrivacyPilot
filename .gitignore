@@ -3,3 +3,5 @@ env/
 node_modules/
 __pycache__/
 model/
+/.venv
+/venv
