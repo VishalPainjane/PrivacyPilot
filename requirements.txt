@@ -1,19 +1,34 @@
+# Core dependencies
 pandas==2.2.3
 langchain==0.3.13
-langchain-google-genai==2.0.7
-pymupdf==1.25.1
-fpdf==1.7.2
-crawl4ai
-beautifulsoup4==4.12.3
-requests==2.32.3
-python-dotenv==1.0.1
 langchain-groq==0.2.2
 langchain_community==0.3.13
 langchain-chroma==0.1.4
-pypdf==5.1.0
-sentence-transformers==3.3.1
 langchain-huggingface==0.1.2
-PyPDF2==3.0.1
+langchain-google-genai==2.0.7
 langchain-google-vertexai==2.0.9
 google-cloud-aiplatform==1.75.0
+python-dotenv==1.0.1
+
+# Web scraping
+crawl4ai
+beautifulsoup4==4.12.3
+requests==2.32.3
+
+# PDF handling
+pymupdf==1.25.1
+fpdf==1.7.2
+pypdf==5.1.0
+PyPDF2==3.0.1
+
+# Streamlit UI
 streamlit==1.41.1
+
+# RAG Pipeline v2.0 dependencies
+sentence-transformers==3.3.1
+tiktoken>=0.8.0
+chromadb>=0.5.0
+scikit-learn>=1.6.0
+numpy>=1.26.0
+markdown>=3.8
+weasyprint>=63.0
