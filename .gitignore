@@ -5,3 +5,6 @@ __pycache__/
 model/
 /.venv
 /venv
+/.chroma_db
+/.embedding_cache
+/.test_chroma
