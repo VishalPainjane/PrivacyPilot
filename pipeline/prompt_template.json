@@ -1,0 +1,238 @@
+{
+  "system_prompt": "You are an expert privacy policy analyst. Your task is to analyze privacy policies and extract structured information about data collection, usage, retention, and user rights. Be precise and cite evidence from the source text.\n\nWhen answering questions:\n1. Base your response ONLY on the provided context chunks\n2. Include chunk IDs for every claim you make\n3. If information is not found, explicitly state 'Not mentioned in the policy'\n4. Quote relevant text when making specific claims\n5. Distinguish between explicit statements and implications",
+  
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "answer": {
+        "type": "string",
+        "description": "Concise answer to the user's question"
+      },
+      "evidence": {
+        "type": "array",
+        "description": "List of evidence supporting the answer",
+        "items": {
+          "type": "object",
+          "properties": {
+            "chunk_id": {
+              "type": "string",
+              "description": "ID of the source chunk"
+            },
+            "quote": {
+              "type": "string",
+              "description": "Relevant quote from the chunk"
+            },
+            "relevance": {
+              "type": "string",
+              "enum": ["high", "medium", "low"],
+              "description": "How relevant this evidence is to the answer"
+            }
+          },
+          "required": ["chunk_id", "quote", "relevance"]
+        }
+      },
+      "confidence": {
+        "type": "string",
+        "enum": ["high", "medium", "low"],
+        "description": "Confidence level in the answer based on available evidence"
+      },
+      "coverage": {
+        "type": "string",
+        "enum": ["complete", "partial", "none"],
+        "description": "How well the policy addresses the question"
+      }
+    },
+    "required": ["answer", "evidence", "confidence", "coverage"]
+  },
+  
+  "few_shot_examples": [
+    {
+      "question": "What personal data does this service collect?",
+      "context": [
+        {
+          "chunk_id": "chunk_12",
+          "text": "We collect the following information: name, email address, IP address, device information, and browsing history."
+        },
+        {
+          "chunk_id": "chunk_15",
+          "text": "Additionally, we may collect location data if you enable location services on your device."
+        }
+      ],
+      "response": {
+        "answer": "The service collects: (1) Personal identifiers: name, email address, IP address; (2) Device information and browsing history; (3) Location data (if enabled by user).",
+        "evidence": [
+          {
+            "chunk_id": "chunk_12",
+            "quote": "We collect the following information: name, email address, IP address, device information, and browsing history.",
+            "relevance": "high"
+          },
+          {
+            "chunk_id": "chunk_15",
+            "quote": "Additionally, we may collect location data if you enable location services on your device.",
+            "relevance": "high"
+          }
+        ],
+        "confidence": "high",
+        "coverage": "complete"
+      }
+    },
+    {
+      "question": "How long is my data retained?",
+      "context": [
+        {
+          "chunk_id": "chunk_23",
+          "text": "We retain your account information for as long as your account is active."
+        },
+        {
+          "chunk_id": "chunk_24",
+          "text": "After account deletion, we may retain certain information for up to 90 days for backup purposes."
+        }
+      ],
+      "response": {
+        "answer": "Data is retained while your account is active, plus up to 90 days after account deletion for backup purposes. Specific retention periods for individual data types are not specified.",
+        "evidence": [
+          {
+            "chunk_id": "chunk_23",
+            "quote": "We retain your account information for as long as your account is active.",
+            "relevance": "high"
+          },
+          {
+            "chunk_id": "chunk_24",
+            "quote": "After account deletion, we may retain certain information for up to 90 days for backup purposes.",
+            "relevance": "high"
+          }
+        ],
+        "confidence": "medium",
+        "coverage": "partial"
+      }
+    },
+    {
+      "question": "Can I opt out of data sharing with third parties?",
+      "context": [
+        {
+          "chunk_id": "chunk_45",
+          "text": "We share data with service providers to operate our platform."
+        },
+        {
+          "chunk_id": "chunk_47",
+          "text": "We do not sell your personal information to third parties."
+        }
+      ],
+      "response": {
+        "answer": "The policy does not explicitly mention an opt-out mechanism for third-party data sharing. While it states data is shared with service providers and not sold, specific opt-out procedures are not mentioned in the policy.",
+        "evidence": [
+          {
+            "chunk_id": "chunk_45",
+            "quote": "We share data with service providers to operate our platform.",
+            "relevance": "medium"
+          },
+          {
+            "chunk_id": "chunk_47",
+            "quote": "We do not sell your personal information to third parties.",
+            "relevance": "low"
+          }
+        ],
+        "confidence": "low",
+        "coverage": "none"
+      }
+    }
+  ],
+  
+  "analysis_dimensions": [
+    {
+      "name": "Data Collection",
+      "questions": [
+        "What types of personal data are collected?",
+        "Are there different data collection practices for different services/features?",
+        "Is data collected automatically vs. user-provided?",
+        "What tracking technologies are used (cookies, pixels, etc.)?"
+      ]
+    },
+    {
+      "name": "Data Usage",
+      "questions": [
+        "What are the primary purposes for data processing?",
+        "Is data used for marketing or advertising?",
+        "Is data used for analytics or service improvement?",
+        "Are there any automated decision-making or profiling activities?"
+      ]
+    },
+    {
+      "name": "Data Sharing",
+      "questions": [
+        "With whom is data shared (service providers, partners, affiliates)?",
+        "Is data sold to third parties?",
+        "Are there international data transfers?",
+        "What safeguards are in place for data sharing?"
+      ]
+    },
+    {
+      "name": "Data Retention",
+      "questions": [
+        "How long is data retained?",
+        "Are there different retention periods for different data types?",
+        "What happens to data after account deletion?",
+        "Is there a data minimization principle mentioned?"
+      ]
+    },
+    {
+      "name": "User Rights",
+      "questions": [
+        "Can users access their personal data?",
+        "Can users request data deletion?",
+        "Can users correct or update their data?",
+        "Can users export their data (data portability)?",
+        "Are there opt-out mechanisms for specific processing activities?"
+      ]
+    },
+    {
+      "name": "Security",
+      "questions": [
+        "What security measures are in place to protect data?",
+        "Is encryption used (in transit and at rest)?",
+        "What breach notification procedures exist?",
+        "Are there access controls and authentication requirements?"
+      ]
+    },
+    {
+      "name": "Children's Privacy",
+      "questions": [
+        "Is the service intended for children?",
+        "What is the minimum age requirement?",
+        "Are there special protections for children's data?",
+        "Is parental consent required?"
+      ]
+    },
+    {
+      "name": "Policy Changes",
+      "questions": [
+        "How are users notified of policy changes?",
+        "What is the effective date of changes?",
+        "Are users required to accept changes?",
+        "Is a changelog or version history provided?"
+      ]
+    },
+    {
+      "name": "Legal Basis (GDPR)",
+      "questions": [
+        "What is the legal basis for processing (consent, contract, legitimate interest)?",
+        "Are users informed about their GDPR rights?",
+        "Is there a Data Protection Officer (DPO) contact?",
+        "Is there information about supervisory authorities?"
+      ]
+    },
+    {
+      "name": "Contact & Complaints",
+      "questions": [
+        "How can users contact the company about privacy concerns?",
+        "Is there a dedicated privacy contact or DPO?",
+        "What is the complaint resolution process?",
+        "Are there alternative dispute resolution mechanisms?"
+      ]
+    }
+  ],
+  
+  "prompt_template": "Context chunks:\n{context}\n\nQuestion: {question}\n\nProvide your analysis in the following JSON format:\n{schema}\n\nRequirements:\n- Base your answer ONLY on the provided context chunks\n- Include chunk_id for every piece of evidence\n- Quote relevant text directly\n- If information is not in the context, state 'Not mentioned in the policy'\n- Assess confidence and coverage honestly",
+  
+  "context_template": "Chunk ID: {chunk_id}\nSource: {url}\nHeader: {header}\nText: {text}\n---"
+}
